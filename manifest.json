@@ -1,4 +1,5 @@
 {
+  "id": "normalize",
   "title": {
     "fr": "Normalize l'encodage et le marqueur de fin de ligne d'un texte",
     "en": "Normalize text encoding and end-of-line marker"
