@@ -1,0 +1,12 @@
+{
+  "title": {
+    "fr": "Normalize l'encodage et le marqueur de fin de ligne d'un texte",
+    "en": "Normalize text encoding and end-of-line marker"
+  },
+  "description": {
+    "fr" : "Convertir un texte en UTF8 avec des lignes se terminant par le caractère LF.",
+    "en" : "Convert text encoding to UTF8 with lines separated by the LF character."
+  },
+  "parameters" : {
+  }
+}
