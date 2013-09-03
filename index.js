@@ -15,6 +15,7 @@ function Command(options)
   this.begin = true;
   this.seg = new Segmenter();
   this.charset = 'utf8';
+  this.counter = 0
 }
 
 Command.prototype = Object.create(
@@ -22,12 +23,14 @@ Command.prototype = Object.create(
 
 Command.prototype.parse = function (lines, done) {
   var that = this;
-  lines.forEach(function (line) {
+  lines.map(function (line) {
       if (line.trim() !== '') {
-        that.push(iconv.decode(line, that.charset).toString().replace(/\r+$/, "").concat("\n"));
+        that.counter++;
+        return iconv.decode(line, that.charset).toString().replace(/\r+$/, "")
       }
     }
-  )
+  );
+  that.push(lines.join('\n'));
   done();
 }
 
@@ -37,15 +40,15 @@ Command.prototype._transform = function (chunk, encoding, done) {
     that.begin = false;
     that.emit('begin');
     that.charset = jschardet.detect(chunk.slice(0, chunk.length < 1024 ? chunk.length : 1024)).encoding;
-    //console.log('charset detected', that.charset);
+    debug('Charset detected : ' + that.charset);
   }
-  //console.log('chunk recevied', chunk.toString());
   this.parse(this.seg.fetch(chunk, that.charset), done);
 
 }
 Command.prototype.end = function () {
   var that = this;
   that.parse(that.seg.fetch(), function () {
+      debug('Lines normalized : ' + that.counter);
       that.emit('end');
     }
   );
